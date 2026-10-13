@@ -1,0 +1,510 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="ms-sp-authoring-source" content="agent">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>招标工作台 V3 · 三花智控战略采购中心</title>
+<style>
+:root{--pri:#0b3d75;--pri2:#1f5fa8;--acc:#e8a317;--ok:#1d7a3a;--warn:#c27c0e;--bad:#b42318;--bg:#f3f6fa;--line:#d8e1ec;--txt:#1f2a37;--sub:#5b6b82}
+*{box-sizing:border-box}body{margin:0;font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;background:var(--bg);color:var(--txt);font-size:13px}
+header{height:52px;background:var(--pri);color:#fff;display:flex;align-items:center;padding:0 18px;gap:14px}
+header .logo{font-weight:700;font-size:16px}header .bu{margin-left:auto;display:flex;gap:10px;align-items:center}
+header select{background:#14508f;color:#fff;border:1px solid #3f74b3;border-radius:4px;padding:4px 6px}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;font-weight:700}
+.wrap{display:flex;height:calc(100vh - 52px)}
+nav{width:188px;background:#fff;border-right:1px solid var(--line);padding:10px 0}
+nav a{display:flex;justify-content:space-between;padding:10px 18px;color:var(--txt);text-decoration:none;cursor:pointer;border-left:3px solid transparent}
+nav a.on{background:#eaf1fa;border-left-color:var(--pri);color:var(--pri);font-weight:700}
+nav a .n{background:var(--bad);color:#fff;border-radius:9px;padding:0 6px;font-size:11px}
+nav .sec{font-size:11px;color:var(--sub);padding:12px 18px 4px}
+main{flex:1;overflow:auto;padding:16px 20px}
+h2{margin:0 0 12px;font-size:17px;color:var(--pri);display:flex;align-items:center;gap:10px}h3{font-size:14px;margin:0 0 10px;color:var(--pri)}
+.card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:14px;margin-bottom:14px}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:14px}
+.kpi{background:#fff;border:1px solid var(--line);border-top:3px solid var(--pri);border-radius:6px;padding:12px}
+.kpi .v{font-size:22px;font-weight:700;color:var(--pri)}.kpi .l{color:var(--sub);font-size:12px}
+.kpi.w{border-top-color:var(--acc)}.kpi.r{border-top-color:var(--bad)}.kpi.g{border-top-color:var(--ok)}
+table{width:100%;border-collapse:collapse}th{background:#eaf1fa;color:var(--pri);text-align:left;padding:8px;border-bottom:1px solid var(--line);font-weight:600}
+td{padding:8px;border-bottom:1px solid #edf1f6;vertical-align:top}tr.click:hover td{background:#f6f9fd;cursor:pointer}
+.tag{display:inline-block;padding:1px 7px;border-radius:10px;font-size:11px;border:1px solid}
+.t-ok{color:var(--ok);background:#e6f4ea;border-color:#a7d7b5}.t-w{color:var(--warn);background:#fff6e0;border-color:#f0cf86}
+.t-r{color:var(--bad);background:#fdecea;border-color:#f3b7b2}.t-b{color:var(--pri2);background:#e8f0fb;border-color:#a9c3e8}.t-g{color:#666;background:#f1f1f1;border-color:#ccc}
+.btn{border:1px solid var(--pri);background:var(--pri);color:#fff;border-radius:4px;padding:6px 14px;cursor:pointer;font-size:13px}
+.btn.o{background:#fff;color:var(--pri)}.btn.r{background:var(--bad);border-color:var(--bad)}.btn.s{padding:3px 9px;font-size:12px}
+.row{display:flex;gap:14px}.col{flex:1;min-width:0}
+.pipe{display:flex;gap:4px;margin:6px 0 4px}
+.stg{flex:1;padding:8px 6px;border-radius:4px;background:#eef2f7;color:var(--sub);text-align:center;font-size:12px;cursor:pointer;border:2px solid transparent}
+.stg.done{background:#e3f1e7;color:var(--ok)}.stg.cur{background:var(--pri);color:#fff}.stg.skip{background:#f6f6f6;color:#aaa;text-decoration:line-through}
+.stg.sel{border-color:var(--acc)}.stg .gt{display:block;font-size:10px;margin-top:2px}
+.mini{display:flex;gap:2px}.mini i{width:14px;height:6px;border-radius:2px;background:#dde4ee}.mini i.d{background:#58a86c}.mini i.c{background:var(--pri)}.mini i.s{background:#eee}
+.agent{border:1px solid var(--line);border-radius:5px;padding:10px;margin-bottom:8px;background:#fcfdff}
+.agent .hd{display:flex;align-items:center;gap:8px;margin-bottom:6px}.agent .hd b{color:var(--pri)}.agent .ev{font-size:11px;color:var(--sub)}
+.gate{border:2px solid var(--acc);background:#fffaf0;border-radius:6px;padding:12px}
+textarea{width:100%;min-height:54px;border:1px solid var(--line);border-radius:4px;padding:6px;font-family:inherit}
+.bar{height:8px;background:#e6ecf4;border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--pri2)}
+.muted{color:var(--sub);font-size:12px}.seal{background:#1f2a37;color:#fff;padding:2px 8px;border-radius:3px;font-size:11px}
+.chat{position:fixed;right:18px;bottom:18px;width:340px;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.15);display:none;flex-direction:column;max-height:470px;z-index:5}
+.chat .h{background:var(--pri);color:#fff;padding:9px 12px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between}
+.chat .b{padding:10px;overflow:auto;flex:1;font-size:12px}.chat .m{margin:6px 0;padding:7px 9px;border-radius:6px;background:#eef3fa}.chat .m.u{background:#fff4dc;text-align:right}
+.chat .i{display:flex;border-top:1px solid var(--line)}.chat input{flex:1;border:0;padding:9px;outline:none}
+.fab{position:fixed;right:18px;bottom:18px;background:var(--pri);color:#fff;border-radius:22px;padding:10px 16px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:5}
+.toast{position:fixed;top:64px;left:50%;transform:translateX(-50%);background:var(--ok);color:#fff;padding:8px 18px;border-radius:4px;display:none;z-index:30}
+.toast.err{background:var(--bad)}
+.foot{font-size:11px;color:var(--sub);margin-top:6px}
+.filters{display:flex;gap:8px;margin-bottom:10px;align-items:center}.filters input,.filters select{border:1px solid var(--line);border-radius:4px;padding:5px 8px}
+.hl{background:#fff1d6}
+/* 弹窗表单 */
+.mask{position:fixed;inset:0;background:rgba(15,27,45,.45);display:none;align-items:center;justify-content:center;z-index:20}
+.modal{background:#fff;border-radius:8px;width:720px;max-height:90vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.modal .mh{background:var(--pri);color:#fff;padding:12px 18px;font-size:15px;font-weight:700;display:flex;justify-content:space-between;border-radius:8px 8px 0 0}
+.modal .mb{padding:16px 18px}.modal .mf{padding:12px 18px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}.grid .full{grid-column:1/3}
+.fld label{display:block;font-size:12px;color:var(--sub);margin-bottom:4px}.fld label b{color:var(--bad)}
+.fld input,.fld select,.fld textarea{width:100%;border:1px solid var(--line);border-radius:4px;padding:6px 8px;font-family:inherit;font-size:13px}
+.fld input:disabled,.fld select:disabled{background:#f2f4f7;color:#888}
+.fld .lock{font-size:11px;color:var(--warn);margin-top:3px}
+.fld.err input,.fld.err select{border-color:var(--bad)}
+.chk{display:flex;gap:18px;align-items:center;padding-top:4px}
+.hint{background:#eef4fb;border-left:4px solid var(--pri);padding:8px 10px;font-size:12px;margin-bottom:12px;color:#33475f}
+/* 登录页 */
+#login{position:fixed;inset:0;z-index:50;display:flex;background:linear-gradient(135deg,#0b3d75 0%,#1f5fa8 55%,#2f78c4 100%)}
+#login .lft{flex:1.2;color:#fff;padding:70px 64px;display:flex;flex-direction:column;justify-content:center}
+#login .lft h1{font-size:32px;margin:0 0 10px}#login .lft p{opacity:.85;font-size:15px;line-height:1.8;margin:0}
+#login .lft ul{margin:26px 0 0;padding:0;list-style:none;font-size:14px;line-height:2.2;opacity:.92}
+#login .rgt{flex:1;display:flex;align-items:center;justify-content:center}
+.lbox{background:#fff;border-radius:10px;width:390px;padding:30px 32px;box-shadow:0 14px 40px rgba(0,0,0,.25)}
+.lbox h2{margin:0 0 4px}.lbox .tabs{display:flex;border-bottom:1px solid var(--line);margin:14px 0 16px}
+.lbox .tabs span{flex:1;text-align:center;padding:8px 0;cursor:pointer;color:var(--sub)}.lbox .tabs span.on{color:var(--pri);border-bottom:2px solid var(--pri);font-weight:700}
+.lbox .fld{margin-bottom:12px}.lbox input{padding:9px 10px!important}
+.lbox .btn{width:100%;padding:10px;font-size:14px}
+.sso{width:100%;padding:10px;border:1px solid #c8d3e1;background:#fff;border-radius:4px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+.ms{display:inline-grid;grid-template-columns:8px 8px;gap:1px}.ms i{width:8px;height:8px;display:block}
+.lerr{color:var(--bad);font-size:12px;min-height:18px}
+.demo{margin-top:14px;font-size:12px;color:var(--sub);border-top:1px dashed var(--line);padding-top:10px}
+.demo table td,.demo table th{padding:3px 5px;font-size:11px}.demo tr{cursor:pointer}.demo tr:hover td{background:#f3f7fc}
+.umenu{position:relative;cursor:pointer;display:flex;align-items:center;gap:8px}
+.udrop{position:absolute;right:0;top:40px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.15);width:230px;display:none;z-index:15}
+.udrop div{padding:9px 14px;font-size:12px}.udrop .a{cursor:pointer}.udrop .a:hover{background:#eef3fa}
+.noauth{background:#f6f7f9;border:1px dashed #c8d0db;border-radius:6px;padding:10px;color:var(--sub);font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">▣ 招标工作台</div><div style="opacity:.75">主控Agent＋子Agent · 人机协同</div>
+  <div class="bu">
+    <select id="buSel"><option>全部业务单元</option><option>家用</option><option>汽零</option><option>微通道</option><option>商用</option><option>智控</option></select>
+    <div class="umenu" id="umenu"><span id="uInfo" style="opacity:.85"></span><div class="avatar" id="uAv"></div>
+      <div class="udrop" id="udrop"><div id="uDetail"></div><div class="a" onclick="logout()">⎋ 退出登录</div></div></div>
+  </div>
+</header>
+<div class="wrap">
+<nav id="nav">
+  <div class="sec">工作台</div>
+  <a data-p="dash" class="on">项目看板</a>
+  <a data-p="todo">待我确认 <span class="n" id="todoN">0</span></a>
+  <a data-p="detail">项目详情</a>
+  <a data-p="eval">评标对比</a>
+  <div class="sec">治理</div>
+  <a data-p="risk">风险与合规预警</a>
+  <a data-p="audit">审计留痕</a>
+  <a data-p="agents">Agent注册中心</a>
+</nav>
+<main id="main"></main>
+</div>
+
+<!-- 新增 / 编辑项目弹窗 -->
+<!-- 登录页 -->
+<div id="login">
+  <div class="lft"><h1>▣ 招标工作台</h1><p>三花智控 · 战略采购中心<br>主控Agent＋子Agent · 人机协同招标管理</p>
+    <ul><li>✔ 7阶段招标全流程编排，关键节点人工确认</li><li>✔ 评标规则开标前锁定，计分可追溯</li><li>✔ 开标前报价系统级密封</li><li>✔ 全过程审计留痕</li></ul></div>
+  <div class="rgt"><div class="lbox">
+    <h2>欢迎登录</h2><div class="muted">请使用企业账号登录</div>
+    <div class="tabs"><span class="on" id="tbSso" onclick="ltab('sso')">企业统一身份（推荐）</span><span id="tbPwd" onclick="ltab('pwd')">账号密码</span></div>
+    <div id="pnSso"><button class="sso" onclick="ssoLogin()"><span class="ms"><i style="background:#f25022"></i><i style="background:#7fba00"></i><i style="background:#00a4ef"></i><i style="background:#ffb900"></i></span>使用 Microsoft Entra ID 登录</button>
+      <div class="muted" style="margin-top:8px">演示模式：将以下方选中的演示账号身份模拟单点登录。</div></div>
+    <div id="pnPwd" style="display:none">
+      <div class="fld"><label>账号</label><input id="lu" placeholder="工号或企业邮箱" autocomplete="username"></div>
+      <div class="fld"><label>密码</label><input id="lp" type="password" placeholder="请输入密码" autocomplete="current-password"></div>
+      <div class="fld"><label>验证码</label><div style="display:flex;gap:8px"><input id="lc" placeholder="请输入右侧验证码" style="flex:1"><span id="cap" onclick="newCap()" title="点击刷新" style="width:90px;display:flex;align-items:center;justify-content:center;background:#eef3fa;border-radius:4px;font:700 17px monospace;letter-spacing:3px;color:#0b3d75;cursor:pointer;user-select:none"></span></div></div>
+      <label class="muted" style="display:flex;gap:6px;align-items:center;margin-bottom:8px"><input type="checkbox" id="lr"> 7天内记住我（仅限公司设备）</label>
+      <div class="lerr" id="lerr"></div>
+      <button class="btn" onclick="pwdLogin()">登 录</button></div>
+    <div class="demo"><b>演示账号</b>（点击行自动填充；密码均为 <code>Sanhua@2026</code>）
+      <table id="demoTb"></table></div>
+  </div></div>
+</div>
+
+<div class="mask" id="mask"><div class="modal">
+  <div class="mh"><span id="mTitle">新增招标项目</span><span style="cursor:pointer" onclick="closeM()">✕</span></div>
+  <div class="mb">
+    <div class="hint" id="mHint"></div>
+    <div class="grid">
+      <div class="fld full"><label>项目名称 <b>*</b></label><input id="f_name" maxlength="60" placeholder="如：2027年度微通道铝压铸件框架招标"></div>
+      <div class="fld"><label>业务单元 <b>*</b></label><select id="f_bu"><option value="">请选择</option><option>家用</option><option>汽零</option><option>微通道</option><option>商用</option><option>智控</option></select></div>
+      <div class="fld"><label>品类 <b>*</b></label><input id="f_cat" list="catList" placeholder="如：铝压铸件"><datalist id="catList"><option>铝压铸件</option><option>钣金件</option><option>机加工件</option><option>铜管件</option><option>PCBA</option><option>包材</option></datalist></div>
+      <div class="fld"><label>招标场景 <b>*</b></label><select id="f_scene"><option value="">请选择</option><option>年度框架招标</option><option>新品招标</option><option>紧急采购</option><option>单一来源</option></select></div>
+      <div class="fld"><label>招标方式</label><select id="f_method"><option>待确认</option><option>公开招标</option><option>邀请招标</option><option>竞争性谈判</option><option>单一来源</option></select><div class="lock" id="l_method"></div></div>
+      <div class="fld"><label>预估金额（万元） <b>*</b></label><input id="f_amt" type="number" min="0" step="0.01"><div class="lock" id="l_amt"></div></div>
+      <div class="fld"><label>截止日期 <b>*</b></label><input id="f_due" type="date"></div>
+      <div class="fld"><label>需求方</label><input id="f_req" placeholder="需求部门 / 联系人"></div>
+      <div class="fld"><label>采购负责人</label><input id="f_owner" placeholder="默认当前用户"></div>
+      <div class="fld full"><label>寻源触发条件（决定是否进入 ② 寻源与市场）</label>
+        <div class="chk"><label><input type="checkbox" id="f_newcat"> 新品类</label><label><input type="checkbox" id="f_newsup"> 需引入新供应商</label></div><div class="lock" id="l_src"></div></div>
+      <div class="fld full"><label>需求说明</label><textarea id="f_desc" placeholder="规格、年用量、认证要求等；可后续上传图纸由需求规格解析Agent处理"></textarea></div>
+      <div class="fld full" id="reasonBox"><label>修改原因 <b>*</b>（写入审计留痕）</label><input id="f_reason" placeholder="如：需求方调整年用量，金额上调"></div>
+    </div>
+  </div>
+  <div class="mf"><button class="btn o" onclick="closeM()">取消</button><button class="btn" id="mSave" onclick="saveP()">保存</button></div>
+</div></div>
+
+<div class="fab" id="fab">💬 招标编排助手</div>
+<div class="chat" id="chat"><div class="h"><span>招标编排助手（主控Agent）</span><span style="cursor:pointer" id="cx">✕</span></div>
+<div class="b" id="cb"><div class="m">您好，我是招标编排主控Agent。可以问我：<br>· “ZB-2026-018 现在到哪一步？”<br>· “有哪些待我确认？”<br>· “本月有哪些重大异常？”</div></div>
+<div class="i"><input id="ci" placeholder="输入问题，回车发送"><button class="btn s" id="cs" style="border-radius:0">发送</button></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ===================== 演示数据（正式版由后端 /tenders API 提供） =====================
+const STAGES=["① 需求立项","② 寻源市场","③ 招标策略","④ 招标准备","⑤ 开评定标","⑥ 审批执行","⑦ 复盘沉淀"];
+const GATES={0:"需求方确认",2:"采购负责人确认",4:"评标小组确认",5:"按权限审批"};
+const SEED=[
+ {id:"ZB-2026-018",name:"2027年度微通道铝压铸件框架招标",bu:"微通道",cat:"铝压铸件",scene:"年度框架招标",method:"邀请招标",amt:3860,cur:4,skip:[],gate:true,risk:["价偏超阈值","串标迹象"],due:"2026-10-16",req:"微通道研发部",owner:"陈丽娟",newcat:false,newsup:true,desc:"ADC12，年用量120万件",demo:true},
+ {id:"ZB-2026-021",name:"2027年度家用钣金件框架招标",bu:"家用",cat:"钣金件",scene:"年度框架招标",method:"公开招标",amt:5240,cur:2,skip:[1],gate:true,risk:[],due:"2026-10-14",req:"家用制造部",owner:"陈丽娟",newcat:false,newsup:false,desc:"",demo:true},
+ {id:"ZB-2026-023",name:"汽零新能源阀体机加工件招标",bu:"汽零",cat:"机加工件",scene:"新品招标",method:"待确认",amt:1720,cur:1,skip:[],gate:false,risk:["新供应商风险"],due:"2026-10-20",req:"汽零研发中心",owner:"陈丽娟",newcat:true,newsup:true,desc:"",demo:true},
+ {id:"ZB-2026-015",name:"商用电控板PCBA框架招标",bu:"商用",cat:"PCBA",scene:"年度框架招标",method:"竞争性谈判",amt:2980,cur:5,skip:[],gate:true,risk:["价偏超阈值"],due:"2026-10-12",req:"商用电控部",owner:"陈丽娟",newcat:false,newsup:true,desc:"",demo:true},
+ {id:"ZB-2026-009",name:"智控包装材料年度招标",bu:"智控",cat:"包材",scene:"年度框架招标",method:"公开招标",amt:860,cur:6,skip:[1],gate:false,risk:[],due:"2026-10-11",req:"智控物流部",owner:"陈丽娟",newcat:false,newsup:false,desc:"",demo:true},
+ {id:"ZB-2026-026",name:"家用铜管件紧急补充招标",bu:"家用",cat:"铜管件",scene:"紧急采购",method:"待确认",amt:640,cur:0,skip:[],gate:true,risk:[],due:"2026-10-13",req:"家用计划部",owner:"陈丽娟",newcat:false,newsup:false,desc:"",demo:true},
+];
+const SEED_AUDIT=[
+ ["2026-10-09 15:42","评标分析Agent v1.2.0","ZB-2026-018","生成评标报告草稿，5家投标，4家有效","SRM招标单 ZB-2026-018；评标规则 R-铝压铸-2026.2"],
+ ["2026-10-09 15:40","招标合规审计Agent v0.9.1","ZB-2026-018","识别串标迹象：供应商C与D报价结构相似度0.93、联系人地址相同","投标文件比对；SRM供应商主档"],
+ ["2026-10-09 15:31","异常价格管理Agent v1.1.0","ZB-2026-018","供应商C、D报价偏差 >10%，判定重大异常","基准成本库 BC-2026-07；近3年历史价"],
+ ["2026-10-09 14:00","开标记录Agent v1.0.0","ZB-2026-018","开标时间到达，报价解封，生成开标记录表","SRM开标时间戳"],
+ ["2026-10-08 10:12","陈丽娟（采购负责人）","ZB-2026-018","确认招标策略：邀请招标，技术40/商务20/价格40","人工确认"],
+];
+// 本地持久化（预览沙箱可能禁用 Web Storage；不可用时退回到本页内存）
+const memoryStore={};
+function safeStorage(kind){try{const s=window[kind],k="__tender_probe__";s.setItem(k,"1");s.removeItem(k);return s}catch(e){return{getItem:k=>memoryStore[k]||null,setItem:(k,v)=>{memoryStore[k]=String(v)},removeItem:k=>{delete memoryStore[k]}}}}
+const localStore=safeStorage("localStorage"),sessionStore=safeStorage("sessionStorage");
+const KEY="tender_ws_v2";
+let store=JSON.parse(localStore.getItem(KEY)||"null")||{projects:SEED,audit:SEED_AUDIT};
+let projects=store.projects,audit=store.audit;
+function persist(){localStore.setItem(KEY,JSON.stringify({projects,audit}))}
+
+const bids=[
+ {s:"供应商A（宁波）",tech:88,biz:90,price:412.6,dev:-2.1,risk:"低",valid:true,cert:"IATF16949 有效",share:50},
+ {s:"供应商B（台州）",tech:85,biz:84,price:405.3,dev:-3.8,risk:"低",valid:true,cert:"IATF16949 有效",share:30},
+ {s:"供应商C（嘉兴）",tech:79,biz:80,price:468.9,dev:11.2,risk:"中",valid:true,cert:"证书2026-12到期",share:20},
+ {s:"供应商D（昆山）",tech:81,biz:78,price:470.1,dev:11.5,risk:"高",valid:true,cert:"IATF16949 有效",share:0},
+ {s:"供应商E（温州）",tech:0,biz:0,price:null,dev:null,risk:"—",valid:false,cert:"投标保证金未缴",share:0},
+];
+const TARGET=421.5;
+const agentReg=[
+ ["spec_parser","需求规格解析Agent","①","1.3.0","复用","L","doc.read, kb.search"],
+ ["budget_target","预算与目标价测算Agent","①","1.0.2","复用","R+L","srm.price_history, market.index"],
+ ["sourcing_v2","供应商寻源助手2.0","②","2.0.1","复用","L","srm.supplier_query, web.search"],
+ ["qualification","供应商资质审查助手","②","1.1.0","复用","R+L","srm.supplier_cert"],
+ ["rfq_compare","智能询价、比价助手","②","1.2.0","复用","R+L","mail.send, srm.quote"],
+ ["tender_strategy","招标策略确认Agent","③","0.8.0","新建","R+L","srm.supplier_query, rules.method"],
+ ["tender_doc_writer","招标文件编制Agent","④","0.6.0","新建","L","sp.template, kb.search"],
+ ["clarification","供应商答疑及澄清Agent","④","0.5.0","新建","L","sp.tender_doc, mail.send"],
+ ["bid_checker","投标文件检查Agent","④","1.0.0","新建","R+L","doc.read_bid_files(不含报价)"],
+ ["bid_opening","开标记录Agent","⑤","1.0.0","新建","R","srm.get_bid_quotes(开标后)"],
+ ["bid_eval","评标分析Agent","⑤","1.2.0","新建","R+L","srm.get_bid_quotes, rules.eval"],
+ ["award_support","定标决策支持Agent","⑤","0.7.0","新建","R+L","—"],
+ ["price_approval","智能价格审批助手","⑥","1.4.0","复用","R+L","srm.price_approval"],
+ ["share_allocation","供应比例动态分额调整Agent","⑥","0.5.0","新建","R","srm.qcd_score"],
+ ["abnormal_price","异常价格管理Agent","横向","1.1.0","复用","R+L","srm.price_history, cost.baseline"],
+ ["supply_risk","供应风险预警智能体","横向","1.0.0","复用","R+L","ext.biz_info, ext.sentiment"],
+ ["compliance_audit","招标合规审计Agent","横向","0.9.1","新建","R+L","doc.similarity, srm.supplier"],
+];
+let curId="ZB-2026-018",selStage=null,bu="全部业务单元",editId=null;
+
+// ===================== 登录与权限（演示：前端模拟；正式版改为 Entra ID / OIDC + 后端鉴权） =====================
+const ROLES={
+ LEAD:{n:"采购负责人",pages:"*",perm:["create","edit","delete","gate0","gate2","gate4","gate5"],bu:"*"},
+ BUYER:{n:"采购员",pages:["dash","todo","detail","eval","risk"],perm:["create","edit"],bu:"own"},
+ REQUESTER:{n:"需求方",pages:["dash","todo","detail"],perm:["gate0"],bu:"own"},
+ EVAL:{n:"评标专家",pages:["todo","detail","eval"],perm:["gate4"],bu:"assigned"},
+ APPROVER:{n:"审批人",pages:["dash","todo","detail","eval","risk"],perm:["gate5"],bu:"*"},
+ AUDITOR:{n:"内控审计（只读）",pages:"*",perm:[],bu:"*"},
+};
+const USERS=[
+ {u:"chenlj",name:"陈丽娟",role:"LEAD",dept:"战略采购中心",bu:"*"},
+ {u:"wangq",name:"王强",role:"BUYER",dept:"微通道采购部",bu:"微通道"},
+ {u:"lim",name:"李敏",role:"REQUESTER",dept:"家用制造部",bu:"家用"},
+ {u:"zhaoy",name:"赵毅",role:"EVAL",dept:"技术中心",bu:"*",assigned:["ZB-2026-018"]},
+ {u:"liuf",name:"刘峰",role:"APPROVER",dept:"采购分管领导",bu:"*"},
+ {u:"sunh",name:"孙慧",role:"AUDITOR",dept:"内控审计部",bu:"*"},
+];
+const DEMO_PWD="Sanhua@2026",SKEY="tender_session",IDLE_MIN=30;
+let me=null,capCode="",fails={},demoPick=USERS[0].u,idleT=null;
+function role(){return ROLES[me.role]}
+function can(p){return role().perm.includes(p)}
+function canPage(pg){const ps=role().pages;return ps==="*"||ps.includes(pg)}
+function who(){return `${me.name}（${role().n}）`}
+function scoped(list){ // 数据范围：按BU / 指派项目过滤
+ if(me.role==="EVAL")return list.filter(p=>(me.assigned||[]).includes(p.id));
+ if(role().bu==="own")return list.filter(p=>p.bu===me.bu);return list}
+function newCap(){const c="ABCDEFGHJKMNPQRSTUVWXYZ23456789";capCode=Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join("");document.getElementById("cap").textContent=capCode}
+function ltab(t){document.getElementById("tbSso").classList.toggle("on",t==="sso");document.getElementById("tbPwd").classList.toggle("on",t==="pwd");
+ document.getElementById("pnSso").style.display=t==="sso"?"":"none";document.getElementById("pnPwd").style.display=t==="pwd"?"":"none";if(t==="pwd")newCap()}
+function renderDemo(){document.getElementById("demoTb").innerHTML="<tr><th>账号</th><th>姓名</th><th>角色</th><th>数据范围</th></tr>"+USERS.map(x=>`<tr onclick="pickDemo('${x.u}')" style="${x.u===demoPick?"background:#fff1d6":""}"><td>${x.u}</td><td>${x.name}</td><td>${ROLES[x.role].n}</td><td>${x.role==="EVAL"?"指派项目":x.bu==="*"?"全部BU":x.bu}</td></tr>`).join("")}
+function pickDemo(u){demoPick=u;document.getElementById("lu").value=u;document.getElementById("lp").value=DEMO_PWD;renderDemo()}
+function pwdLogin(){const u=document.getElementById("lu").value.trim(),pw=document.getElementById("lp").value,c=document.getElementById("lc").value.trim().toUpperCase(),e=document.getElementById("lerr");
+ const f=fails[u]||{n:0,until:0};
+ if(Date.now()<f.until){e.textContent=`连续失败次数过多，账号锁定，请${Math.ceil((f.until-Date.now())/60000)}分钟后重试`;return}
+ if(!u||!pw||!c){e.textContent="请填写账号、密码和验证码";return}
+ if(c!==capCode){e.textContent="验证码错误";newCap();return}
+ const x=USERS.find(y=>y.u===u||y.u+"@sanhua.com"===u);
+ if(!x||pw!==DEMO_PWD){f.n++;if(f.n>=5){f.until=Date.now()+15*60000;f.n=0}fails[u]=f;e.textContent=`账号或密码错误（再错${5-(f.n||5)}次将锁定15分钟）`;newCap();return}
+ fails[u]={n:0,until:0};doLogin(x,"账号密码",document.getElementById("lr").checked)}
+function ssoLogin(){doLogin(USERS.find(x=>x.u===demoPick),"Entra ID 单点登录",false)}
+function doLogin(x,way,remember){
+ me={...x,way,at:now()};(remember?localStore:sessionStore).setItem(SKEY,JSON.stringify({u:x.u,way,at:me.at,exp:Date.now()+(remember?7*864e5:12*36e5)}));
+ audit.unshift([now(),who(),"—",`登录系统（${way}）`,"身份认证"]);persist();enterApp()}
+function restore(){const s=JSON.parse(sessionStore.getItem(SKEY)||localStore.getItem(SKEY)||"null");
+ if(!s||Date.now()>s.exp){sessionStore.removeItem(SKEY);localStore.removeItem(SKEY);return false}
+ const x=USERS.find(y=>y.u===s.u);if(!x)return false;me={...x,way:s.way,at:s.at};return true}
+function logout(reason){if(me){audit.unshift([now(),who(),"—",reason||"退出登录","身份认证"]);persist()}
+ sessionStore.removeItem(SKEY);localStore.removeItem(SKEY);me=null;clearTimeout(idleT);
+ document.getElementById("udrop").style.display="none";closeM();document.getElementById("login").style.display="flex";
+ document.getElementById("lp").value="";document.getElementById("lc").value="";document.getElementById("lerr").textContent=reason?"已因长时间未操作自动退出，请重新登录":"";}
+function resetIdle(){if(!me)return;clearTimeout(idleT);idleT=setTimeout(()=>logout("超时自动退出（"+IDLE_MIN+"分钟无操作）"),IDLE_MIN*60000)}
+["click","keydown","mousemove"].forEach(ev=>document.addEventListener(ev,resetIdle));
+function enterApp(){
+ document.getElementById("login").style.display="none";
+ document.getElementById("uInfo").textContent=`${me.dept} · ${role().n}`;document.getElementById("uAv").textContent=me.name[0];
+ document.getElementById("uDetail").innerHTML=`<b>${me.name}</b>（${me.u}）<br>${me.dept}<br>角色：${role().n}<br>数据范围：${me.role==="EVAL"?"指派项目 "+(me.assigned||[]).join("、"):me.bu==="*"?"全部BU":me.bu}<br>登录方式：${me.way}<br>登录时间：${me.at}`;
+ const bs=document.getElementById("buSel");bs.disabled=role().bu!=="*";if(role().bu==="own"){bs.value=me.bu;bu=me.bu}else{bs.value="全部业务单元";bu="全部业务单元"}
+ document.querySelectorAll("nav a").forEach(a=>a.style.display=canPage(a.dataset.p)?"":"none");
+ document.querySelectorAll("nav .sec").forEach(s=>{let n=s.nextElementSibling,any=false;while(n&&n.tagName==="A"){if(n.style.display!=="none")any=true;n=n.nextElementSibling}s.style.display=any?"":"none"});
+ const first=["dash","todo","detail","eval"].find(canPage);const sc=scoped(projects);if(sc[0])curId=sc[0].id;
+ resetIdle();go(first)}
+
+// ===================== 工具函数 =====================
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const tag=(t,c)=>`<span class="tag ${c}">${t}</span>`;
+const fmt=n=>n==null?"—":Number(n).toLocaleString();
+const P=id=>projects.find(p=>p.id===id);
+const visible=()=>scoped(projects).filter(p=>bu==="全部业务单元"||p.bu===bu);
+const myGate=p=>p.gate&&GATES[p.cur]!==undefined&&can("gate"+p.cur);
+function toast(t,err){const e=$("#toast");e.textContent=t;e.className="toast"+(err?" err":"");e.style.display="block";setTimeout(()=>e.style.display="none",2000)}
+function now(){const d=new Date(),z=n=>String(n).padStart(2,"0");return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())} ${z(d.getHours())}:${z(d.getMinutes())}`}
+function stageTag(p){return p.gate&&GATES[p.cur]!==undefined?tag("待"+GATES[p.cur],"t-w"):tag("Agent执行中","t-b")}
+function mini(p){return `<div class="mini">${STAGES.map((_,i)=>`<i class="${p.skip.includes(i)?"s":i<p.cur?"d":i===p.cur?"c":""}"></i>`).join("")}</div>`}
+function updTodo(){$("#todoN").textContent=visible().filter(myGate).length}
+function nextId(){const y=new Date().getFullYear();const n=projects.filter(p=>p.id.startsWith(`ZB-${y}-`)).map(p=>+p.id.split("-")[2]);return `ZB-${y}-${String((n.length?Math.max(...n):0)+1).padStart(3,"0")}`}
+
+// ===================== 新增 / 编辑 =====================
+// 字段锁定规则：③ 招标策略确认后锁定招标方式与金额（如需变更走“退回”）；进入 ③ 后不可修改寻源触发条件；⑤ 开评定标后除截止日/说明外全部锁定
+function lockRule(p){
+ if(!p)return{};
+ return{
+  method:p.cur>2||(p.cur===2&&!p.gate)?"招标策略已确认，变更须在项目详情中退回至 ③":"",
+  amt:p.cur>2?"招标策略已确认，金额变更须退回至 ③ 重新确认":"",
+  src:p.cur>=2?"已完成寻源路由判定，不可修改":"",
+  core:p.cur>=4?"已进入开评定标，核心信息锁定":"",
+ }}
+function openForm(id){
+ if(!can(id?"edit":"create")){toast("当前角色无此权限",true);return}
+ editId=id||null;const p=id?P(id):null;const L=lockRule(p);
+ $("#mTitle").textContent=p?`编辑项目 · ${p.id}`:"新增招标项目";
+ $("#mHint").innerHTML=p
+  ?`当前阶段：<b>${STAGES[p.cur]}</b>。修改将写入审计留痕；已锁定字段如需变更，请在项目详情中“退回”到对应阶段。`
+  :`保存后系统自动生成招标编号，项目进入 <b>① 需求立项</b>，主控Agent调度需求规格解析与目标价测算，完成后待<b>需求方确认</b>。勾选“新品类/新供应商”将触发 ② 寻源与市场。`;
+ const v=(k,d="")=>p?p[k]:d;
+ $("#f_name").value=v("name");$("#f_bu").value=v("bu",bu==="全部业务单元"?"":bu);$("#f_cat").value=v("cat");$("#f_scene").value=v("scene");
+ $("#f_method").value=v("method","待确认");$("#f_amt").value=v("amt");$("#f_due").value=v("due");$("#f_req").value=v("req");
+ $("#f_owner").value=v("owner",me.name);$("#f_newcat").checked=!!v("newcat",false);$("#f_newsup").checked=!!v("newsup",false);$("#f_desc").value=v("desc");$("#f_reason").value="";
+ $("#reasonBox").style.display=p?"":"none";
+ const dis=(ids,on)=>ids.forEach(i=>$("#"+i).disabled=!!on);
+ dis(["f_name","f_bu","f_cat","f_scene","f_req","f_owner"],L.core);
+ dis(["f_method"],L.method||L.core);dis(["f_amt"],L.amt||L.core);dis(["f_newcat","f_newsup"],L.src||L.core);
+ $("#l_method").textContent=L.core||L.method||"";$("#l_amt").textContent=L.core||L.amt||"";$("#l_src").textContent=L.core||L.src||"";
+ document.querySelectorAll(".fld").forEach(f=>f.classList.remove("err"));
+ $("#mask").style.display="flex";setTimeout(()=>$("#f_name").focus(),50)}
+function closeM(){$("#mask").style.display="none"}
+function saveP(){
+ if(!can(editId?"edit":"create")){toast("当前角色无此权限",true);return}
+ if(role().bu==="own"&&$("#f_bu").value&&$("#f_bu").value!==me.bu){toast("只能在本BU（"+me.bu+"）下新增或修改项目",true);return}
+ const F={name:$("#f_name").value.trim(),bu:$("#f_bu").value,cat:$("#f_cat").value.trim(),scene:$("#f_scene").value,method:$("#f_method").value,
+  amt:$("#f_amt").value===""?null:+$("#f_amt").value,due:$("#f_due").value,req:$("#f_req").value.trim(),owner:$("#f_owner").value.trim()||me.name,
+  newcat:$("#f_newcat").checked,newsup:$("#f_newsup").checked,desc:$("#f_desc").value.trim()};
+ const reason=$("#f_reason").value.trim();
+ document.querySelectorAll(".fld").forEach(f=>f.classList.remove("err"));
+ const bad=[];
+ [["f_name",!F.name],["f_bu",!F.bu],["f_cat",!F.cat],["f_scene",!F.scene],["f_amt",F.amt==null||F.amt<=0],["f_due",!F.due]].forEach(([i,b])=>{if(b){bad.push(i);$("#"+i).closest(".fld").classList.add("err")}});
+ if(editId&&!reason){bad.push("f_reason");$("#f_reason").closest(".fld").classList.add("err")}
+ if(bad.length){toast("请完整填写必填项"+(editId&&!reason?"（含修改原因）":""),true);return}
+ if(F.scene==="单一来源"&&F.method!=="待确认"&&F.method!=="单一来源"){toast("单一来源场景的招标方式须为“单一来源”或“待确认”",true);return}
+ if(projects.some(p=>p.name===F.name&&p.id!==editId)){toast("已存在同名招标项目，请核对",true);return}
+ if(!editId){
+  const p={id:nextId(),...F,cur:0,skip:[],gate:false,risk:[],demo:false};
+  projects.unshift(p);
+  audit.unshift([now(),who(),p.id,`新增招标项目：${p.name}（${p.bu}/${p.cat}/${fmt(p.amt)}万元）`,"人工录入"]);
+  audit.unshift([now(),"招标编排主控Agent",p.id,`识别场景“${p.scene}”，进入 ① 需求立项，调度需求规格解析Agent、预算与目标价测算Agent；寻源路由：${p.newcat||p.newsup?"触发 ②":"跳过 ②"}`,"状态机检查点"]);
+  setTimeout(()=>{p.gate=true;persist();refresh()},1500);   // 模拟子Agent完成后进入需求方确认
+  curId=p.id;toast(`已新增 ${p.id}，主控Agent开始执行`);
+ }else{
+  const p=P(editId),label={name:"项目名称",bu:"业务单元",cat:"品类",scene:"招标场景",method:"招标方式",amt:"金额(万元)",due:"截止日期",req:"需求方",owner:"采购负责人",newcat:"新品类",newsup:"新供应商",desc:"需求说明"};
+  const diff=Object.keys(label).filter(k=>String(p[k]??"")!==String(F[k]??"")).map(k=>`${label[k]}：${p[k]===true?"是":p[k]===false?"否":p[k]||"空"} → ${F[k]===true?"是":F[k]===false?"否":F[k]||"空"}`);
+  if(!diff.length){toast("未检测到修改",true);return}
+  Object.assign(p,F);
+  if(p.cur<2)p.skip=[];   // 寻源条件可能变化，路由在 ① 确认后重新判定
+  audit.unshift([now(),who(),p.id,`修改项目信息：${diff.join("；")}；原因：${reason}`,"人工修改"]);
+  if(p.cur>=1&&diff.some(d=>/金额|品类|需求说明/.test(d)))audit.unshift([now(),"招标编排主控Agent",p.id,"关键信息变更，已通知相关子Agent重新校验（目标价/合规）","状态机检查点"]);
+  toast("已保存修改，并写入审计留痕");
+ }
+ persist();closeM();refresh()}
+function delP(id){if(!can("delete")){toast("当前角色无此权限",true);return}const p=P(id);
+ if(p.cur>0||p.gate&&p.cur>0){toast("仅 ① 需求立项阶段的项目可撤销",true);return}
+ const r=prompt(`撤销 ${p.id}「${p.name}」？\n请输入撤销原因：`);if(!r)return;
+ projects=projects.filter(x=>x.id!==id);audit.unshift([now(),who(),id,`撤销招标项目；原因：${r}`,"人工操作"]);
+ curId=projects[0]?.id;persist();go("dash");toast("项目已撤销")}
+function resetDemo(){if(confirm("恢复演示数据？本地新增和修改将清空。")){localStore.removeItem(KEY);location.reload()}}
+function refresh(){go($("nav a.on").dataset.p)}
+
+// ===================== 页面 =====================
+const pages={
+dash(){const v=visible(),todo=v.filter(myGate).length,risk=v.filter(p=>p.risk.length).length;
+return `<h2>项目看板 ${can("create")?'<button class="btn" style="margin-left:auto" onclick="openForm()">＋ 新增招标项目</button>':'<span style="margin-left:auto"></span>'}${me.role==="LEAD"?'<button class="btn o s" onclick="resetDemo()">恢复演示数据</button>':""}</h2>
+<div class="kpis">
+ <div class="kpi"><div class="v">${v.length}</div><div class="l">在途招标项目</div></div>
+ <div class="kpi"><div class="v">${fmt(v.reduce((a,b)=>a+(+b.amt||0),0))}</div><div class="l">招标金额（万元）</div></div>
+ <div class="kpi w"><div class="v">${todo}</div><div class="l">待人工确认节点</div></div>
+ <div class="kpi r"><div class="v">${risk}</div><div class="l">风险/合规预警项目</div></div>
+ <div class="kpi g"><div class="v">86%</div><div class="l">Agent建议人工采纳率</div></div>
+ <div class="kpi g"><div class="v">-42%</div><div class="l">招标文件编制工时</div></div>
+</div>
+<div class="card"><div class="filters"><input id="kw" placeholder="搜索招标编号/名称/品类" oninput="filterTb()"><select id="stf" onchange="filterTb()"><option value="">全部阶段</option>${STAGES.map((s,i)=>`<option value="${i}">${s}</option>`).join("")}</select></div>
+<table id="tb"><tr><th>招标编号</th><th>项目名称</th><th>BU</th><th>品类</th><th>招标方式</th><th>金额(万元)</th><th>进度</th><th>当前阶段</th><th>状态</th><th>预警</th><th>截止</th><th>操作</th></tr>
+${v.map(p=>`<tr class="click" data-id="${p.id}" data-s="${p.cur}" data-k="${esc(p.id+p.name+p.cat)}"><td><b>${p.id}</b>${p.demo?"":" "+tag("新","t-b")}</td><td>${esc(p.name)}</td><td>${esc(p.bu)}</td><td>${esc(p.cat)}</td><td>${esc(p.method)}</td><td>${fmt(p.amt)}</td><td>${mini(p)}</td><td>${STAGES[p.cur]}</td><td>${stageTag(p)}</td><td>${p.risk.map(r=>tag(r,"t-r")).join(" ")||tag("无","t-ok")}</td><td>${p.due}</td>
+<td onclick="event.stopPropagation()">${can("edit")?`<button class="btn o s" onclick="openForm('${p.id}')">编辑</button>`:'<span class="muted">只读</span>'}${p.cur===0&&can("delete")?` <button class="btn o s" style="color:var(--bad);border-color:var(--bad)" onclick="delP('${p.id}')">撤销</button>`:""}</td></tr>`).join("")}
+</table><div class="foot">注：演示数据；新增/修改保存在本浏览器（localStorage）。KPI中“采纳率、工时”为示意值。</div></div>`},
+
+todo(){const v=visible().filter(myGate);
+return `<h2>待我确认</h2><div class="card"><table><tr><th>招标编号</th><th>项目</th><th>确认节点</th><th>Agent建议摘要</th><th>预警</th><th>截止</th><th></th></tr>
+${v.map(p=>`<tr><td><b>${p.id}</b></td><td>${esc(p.name)}</td><td>${tag(GATES[p.cur],"t-w")}</td><td>${gateSummary(p)[0]}</td><td>${p.risk.map(r=>tag(r,"t-r")).join(" ")||"—"}</td><td>${p.due}</td><td><button class="btn s" onclick="openP('${p.id}')">去处理</button></td></tr>`).join("")||`<tr><td colspan=7 class="muted">暂无待确认事项</td></tr>`}
+</table></div>`},
+
+detail(){const sp=scoped(projects);const p=sp.find(x=>x.id===curId)||sp[0];if(!p)return `<h2>项目详情</h2><div class="card muted">暂无项目</div>`;curId=p.id;const s=selStage??p.cur;
+return `<h2>${p.id}　${esc(p.name)}${can("edit")?`<button class="btn o s" style="margin-left:auto" onclick="openForm('${p.id}')">✎ 编辑项目信息</button>`:""}</h2>
+<div class="card"><div class="row" style="align-items:center"><div class="col muted">BU：${esc(p.bu)}　品类：${esc(p.cat)}　场景：${esc(p.scene||"—")}　方式：${esc(p.method)}　金额：${fmt(p.amt)}万元　需求方：${esc(p.req||"—")}　截止：${p.due}</div>
+<select onchange="openP(this.value)">${scoped(projects).map(x=>`<option ${x.id===p.id?"selected":""}>${x.id}</option>`).join("")}</select></div>
+<div class="pipe">${STAGES.map((n,i)=>`<div class="stg ${p.skip.includes(i)?"skip":i<p.cur?"done":i===p.cur?"cur":""} ${i===s?"sel":""}" onclick="selS(${i})">${n}${GATES[i]?`<span class="gt">✔ ${GATES[i]}</span>`:`<span class="gt">${i===1?"条件触发":"自动流转"}</span>`}</div>`).join("")}</div>
+<div class="muted">点击阶段查看子Agent结果。${p.skip.includes(1)?"② 未触发（非新品类、无新供应商）。":""}</div></div>
+<div class="row"><div class="col" style="flex:1.6"><div class="card"><h3>${STAGES[s]} · 子Agent执行结果</h3>${agentResults(p,s)}</div></div>
+<div class="col"><div class="card">${gatePanel(p,s)}</div>
+<div class="card"><h3>横向支撑</h3>
+${p.risk.length?p.risk.map(r=>`<div class="agent"><div class="hd">${tag("预警","t-r")}<b>${r}</b></div><div class="ev">${r==="串标迹象"?"招标合规审计Agent：供应商C/D报价结构相似度0.93，联系人地址相同，建议评标小组复核。":r==="价偏超阈值"?"异常价格管理Agent：报价偏差>10%判定重大异常，须人工复核并说明。":"供应风险预警智能体：新供应商工商与司法信息待核验。"}</div></div>`).join(""):'<div class="muted">暂无预警</div>'}
+</div></div></div>`},
+
+eval(){const p=scoped(projects).find(x=>x.id==="ZB-2026-018");if(!p)return `<h2>评标对比</h2><div class="card muted">演示项目已撤销，请恢复演示数据。</div>`;const v=bids.filter(b=>b.valid);
+const sc=b=>Math.round((b.tech*0.4+b.biz*0.2+Math.min(TARGET/b.price*100,100)*0.4)*10)/10;
+const rank=[...v].sort((a,b)=>sc(b)-sc(a));
+return `<h2>评标对比 · ${p.id}</h2>
+<div class="card"><div class="muted" style="margin-bottom:8px">评标规则 R-铝压铸-2026.2（开标前已锁定）：技术40% ｜ 商务20% ｜ 价格40%（价格分＝目标价/报价×100，上限100）　目标价：${TARGET} 元/件　${tag("计分由规则代码执行，LLM仅出分析说明","t-b")}</div>
+<table><tr><th>排名</th><th>投标人</th><th>符合性</th><th>资质</th><th>技术分</th><th>商务分</th><th>报价(元/件)</th><th>较目标价</th><th>风险</th><th>综合得分</th><th>建议份额</th></tr>
+${rank.map((b,i)=>`<tr class="${i===0?"hl":""}"><td>${i+1}</td><td><b>${b.s}</b></td><td>${tag("有效","t-ok")}</td><td>${b.cert}</td><td>${b.tech}</td><td>${b.biz}</td><td>${b.price}</td><td>${b.dev>10?tag("+"+b.dev+"% 重大异常","t-r"):b.dev>5?tag("+"+b.dev+"% 异常","t-w"):tag(b.dev+"%","t-ok")}</td><td>${tag(b.risk,b.risk==="高"?"t-r":b.risk==="中"?"t-w":"t-ok")}</td><td><div style="display:flex;gap:6px;align-items:center"><div class="bar" style="width:70px"><i style="width:${sc(b)}%"></i></div><b>${sc(b)}</b></div></td><td>${b.share}%</td></tr>`).join("")}
+${bids.filter(b=>!b.valid).map(b=>`<tr style="color:#999"><td>—</td><td>${b.s}</td><td>${tag("无效标","t-r")}</td><td colspan=8>${b.cert}（投标文件检查Agent判定）</td></tr>`).join("")}
+</table></div>
+<div class="row"><div class="col card"><h3>定标决策支持Agent · 建议</h3><ul style="margin:0;padding-left:18px;line-height:1.8">
+<li>推荐顺序：${rank.map(b=>b.s.split("（")[0]).join(" ＞ ")}。</li>
+<li>建议A、B双供为主（50%/30%），C以20%份额作为第三供，前提是完成证书续期承诺。</li>
+<li>C、D报价较目标价高出11%以上，建议发起一轮价格谈判，目标价降至 ${TARGET} 元以内。</li>
+<li>C与D存在串标迹象，建议评标小组复核后再决定是否保留D的资格。</li></ul>
+<div class="foot">本结果为AI辅助建议，定标以评标小组确认为准。</div></div>
+<div class="col card"><h3>敏感性分析</h3><table><tr><th>情景</th><th>第一名</th><th>结论</th></tr>
+<tr><td>价格权重 40%→50%</td><td>供应商A</td><td>${tag("排名不变","t-ok")}</td></tr>
+<tr><td>技术权重 40%→30%</td><td>供应商A</td><td>${tag("A/B差距缩小","t-w")}</td></tr>
+<tr><td>B谈判降价3%</td><td>供应商B</td><td>${tag("排名反转","t-r")}</td></tr></table></div></div>`},
+
+risk(){return `<h2>风险与合规预警</h2><div class="card"><table><tr><th>项目</th><th>阶段</th><th>预警类型</th><th>来源Agent</th><th>说明</th><th>等级</th><th>处置</th></tr>
+<tr><td>ZB-2026-018</td><td>⑤</td><td>串标迹象</td><td>招标合规审计Agent</td><td>供应商C/D报价结构相似度0.93，联系人地址相同</td><td>${tag("高","t-r")}</td><td>${tag("待评标小组复核","t-w")}</td></tr>
+<tr><td>ZB-2026-018</td><td>⑤</td><td>价偏超阈值</td><td>异常价格管理Agent</td><td>C/D报价较基准成本高11.2%/11.5%</td><td>${tag("重大异常","t-r")}</td><td>${tag("待谈判","t-w")}</td></tr>
+<tr><td>ZB-2026-015</td><td>⑥</td><td>价偏超阈值</td><td>异常价格管理Agent</td><td>拟中标价较上次审批价高6.8%，原因：铜价联动</td><td>${tag("异常","t-w")}</td><td>${tag("已说明","t-ok")}</td></tr>
+<tr><td>ZB-2026-023</td><td>②</td><td>新供应商风险</td><td>供应风险预警智能体</td><td>2家入围新供应商成立不足2年，待核验司法信息</td><td>${tag("中","t-w")}</td><td>${tag("核验中","t-b")}</td></tr>
+</table></div>`},
+
+audit(){return `<h2>审计留痕</h2><div class="card"><div class="muted" style="margin-bottom:8px">只追加、不可修改；新增、修改、撤销、确认均自动记录。<button class="btn o s" style="float:right" onclick="expAudit()">导出CSV</button></div>
+<table><tr><th>时间</th><th>操作主体</th><th>项目</th><th>事件</th><th>证据 / 来源</th></tr>
+${audit.map(a=>`<tr><td style="white-space:nowrap">${a[0]}</td><td>${/Agent|智能体/.test(a[1])?tag("AI","t-b"):tag("人工","t-w")} ${esc(a[1])}</td><td>${a[2]}</td><td>${esc(a[3])}</td><td class="muted">${esc(a[4])}</td></tr>`).join("")}</table></div>`},
+
+agents(){return `<h2>Agent注册中心</h2><div class="card"><div class="muted" style="margin-bottom:8px">子Agent统一实现 AgentResult 契约，主控按 agent_id 调用；工具白名单＝最小权限。<span class="seal">报价工具开标前系统级密封</span></div>
+<table><tr><th>agent_id</th><th>名称</th><th>阶段</th><th>版本</th><th>来源</th><th>实现</th><th>工具白名单</th><th>状态</th></tr>
+${agentReg.map(a=>{const on=a[4]==="复用"||parseFloat(a[3])>=1;return `<tr><td><code>${a[0]}</code></td><td>${a[1]}</td><td>${a[2]}</td><td>${a[3]}</td><td>${tag(a[4],a[4]==="复用"?"t-ok":"t-b")}</td><td>${a[5]}</td><td class="muted">${a[6]}</td><td>${tag(on?"已上线":"测试中",on?"t-ok":"t-w")}</td></tr>`}).join("")}</table></div>`},
+};
+
+// ===================== 子Agent结果 & 门禁 =====================
+const RES={
+0:[["需求规格解析Agent","ok","图纸及技术要求结构化完成：材料ADC12、年用量120万件、关键尺寸28项","需求包 REQ-018；图纸 DWG-7731"],["预算与目标价测算Agent","ok",`目标价 ${TARGET} 元/件（历史价×0.97＋铝价联动）`,"近3年历史价；SMM铝锭均价"]],
+1:[["供应商寻源助手2.0","ok","长名单14家 → 短名单6家（SRM内部4家＋外部2家）","SRM问数；SPARK寻源知识库"],["供应商资质审查助手","warn","1家IATF16949证书将于2026-12到期","SRM资质档案"],["智能询价、比价助手","ok","6家回价，摸底区间 398–475 元/件","询价邮件 RFQ-018"]],
+2:[["招标策略确认Agent","ok","建议邀请招标：合格供方6家、金额3,860万元；评标权重 技术40/商务20/价格40","招标管理制度；规则 R-铝压铸-2026.2"],["招标合规审计Agent","ok","招标方式与金额区间匹配，合规","制度条款"]],
+3:[["招标文件编制Agent","ok","生成招标文件初稿（技术规范、商务条款、合同范本），待采购复核","模板 TPL-框架招标-v3"],["供应商答疑及澄清Agent","ok","收到问题7条，已统一答复并发布全体投标人","澄清公告 CL-018-01"],["投标文件检查Agent","warn","5家投标：4家有效，供应商E投标保证金未缴→无效标","投标文件；保证金到账记录"]],
+4:[["开标记录Agent","ok","报价解封，开标记录表已生成","SRM开标时间戳"],["评标分析Agent","ok","4家有效标完成计分，A综合得分最高","规则 R-铝压铸-2026.2"],["异常价格管理Agent","bad","C、D报价偏差>10%，重大异常","基准成本库 BC-2026-07"],["招标合规审计Agent","bad","C与D存在串标迹象，建议复核","投标文件相似度比对"],["定标决策支持Agent","ok","建议A 50% / B 30% / C 20%，对C、D发起价格谈判","评标报告 EV-018"]],
+5:[["智能价格审批助手","ok","价格审批报告已生成，待按权限审批","OA价格审批单"],["供应比例动态分额调整Agent","ok","按QCD测算份额 A50/B30/C20","QCD评分表"],["合同生成助手","pend","等待审批通过后生成",""]],
+6:[["招标复盘学习Agent","pend","项目结束后自动生成复盘报告",""],["供应商绩效管理Agent","pend","中标后履约数据回流",""]],
+};
+const AG_NAMES={0:["需求规格解析Agent","预算与目标价测算Agent"],1:["供应商寻源助手2.0","供应商资质审查助手","智能询价、比价助手"],2:["招标策略确认Agent","招标合规审计Agent"],3:["招标文件编制Agent","供应商答疑及澄清Agent","投标文件检查Agent"],4:["开标记录Agent","评标分析Agent","定标决策支持Agent"],5:["智能价格审批助手","供应比例动态分额调整Agent","合同生成助手"],6:["招标复盘学习Agent","供应商绩效管理Agent"]};
+function agentResults(p,s){
+ if(p.skip.includes(s))return `<div class="muted">本阶段未触发（主控路由判定：非新品类、无新供应商）。</div>`;
+ if(s>p.cur)return `<div class="muted">尚未进入本阶段。</div>`;
+ if(!p.demo){ // 新增项目：正式版由后端返回真实子Agent结果
+  return AG_NAMES[s].map(n=>`<div class="agent"><div class="hd">${s<p.cur||p.gate?tag("完成","t-ok"):tag("执行中","t-b")}<b>${n}</b></div><div class="muted">${s<p.cur||p.gate?"已完成（演示）：结果由后端子Agent返回后展示":"主控Agent已调度，等待结果…"}</div></div>`).join("")}
+ return (RES[s]||[]).map(r=>{const st=s===p.cur&&!p.gate&&r[1]!=="pend"?"run":r[1];
+  return `<div class="agent"><div class="hd">${{ok:tag("完成","t-ok"),warn:tag("提示","t-w"),bad:tag("预警","t-r"),pend:tag("待执行","t-g"),run:tag("执行中","t-b")}[st]}<b>${r[0]}</b></div><div>${r[2]}</div>${r[3]?`<div class="ev">证据：${r[3]}</div>`:""}</div>`}).join("");
+}
+function gateSummary(p){return ({0:["需求包与目标价已生成，请确认规格与预算"],2:["建议"+(p.method==="待确认"?"公开招标":p.method)+"，评标权重已拟定"],4:["A综合第一，建议A/B/C 50/30/20；C、D重大价偏且有串标迹象"],5:["价格审批报告与份额方案待审批"]})[p.cur]||["—"]}
+function gatePanel(p,s){
+ if(p.gate&&GATES[p.cur]!==undefined&&s===p.cur&&!can("gate"+p.cur))return `<h3>人工确认</h3><div class="noauth">⚑ 待${GATES[p.cur]}。当前角色（${role().n}）无此节点确认权限，仅可查看。</div>`;
+ if(!(p.gate&&GATES[p.cur]!==undefined&&s===p.cur))return `<h3>人工确认</h3><div class="muted">${GATES[s]?(s<p.cur?"✔ 已确认（"+GATES[s]+"）":"本阶段结束后需："+GATES[s]):"本阶段无人工门禁，自动流转。"}</div>`;
+ return `<div class="gate"><h3>⚑ 待${GATES[p.cur]}</h3><ul style="margin:0 0 8px;padding-left:18px">${gateSummary(p).map(x=>`<li>${x}</li>`).join("")}</ul>
+ <textarea id="op" placeholder="确认意见（驳回或退回时必填）"></textarea>
+ <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button class="btn" onclick="decide('approve')">确认通过</button>
+ <select id="bk">${STAGES.slice(0,p.cur+1).map((x,i)=>`<option value="${i}">${x}</option>`).join("")}</select><button class="btn o" onclick="decide('back')">退回</button>
+ <button class="btn r" onclick="decide('reject')">驳回</button></div>
+ <div class="foot">AI结果仅为建议，最终决策以人工确认为准；确认记录写入审计留痕。</div></div>`}
+
+// ===================== 交互 =====================
+function go(pg){if(!me)return;if(!canPage(pg)){toast("当前角色无权访问该页面",true);pg=["dash","todo","detail","eval"].find(canPage)}document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.p===pg));$("#main").innerHTML=pages[pg]();updTodo();
+ document.querySelectorAll("tr.click").forEach(r=>r.onclick=()=>openP(r.dataset.id))}
+function openP(id){curId=id;selStage=null;go("detail")}
+function selS(i){selStage=i;go("detail")}
+function filterTb(){const k=$("#kw").value,s=$("#stf").value;document.querySelectorAll("#tb tr.click").forEach(r=>r.style.display=(!k||r.dataset.k.includes(k))&&(!s||r.dataset.s===s)?"":"none")}
+function decide(t){const p=P(curId);if(!can("gate"+p.cur)){toast("当前角色无此确认权限",true);return}const op=$("#op").value.trim();
+ if(t!=="approve"&&!op){toast("驳回/退回请填写意见",true);return}
+ const g=GATES[p.cur];
+ if(t==="approve"){p.gate=false;audit.unshift([now(),who(),p.id,`${g}：通过${op?"；意见："+op:""}`,"人工确认"]);
+  if(p.cur===0)p.skip=(p.newcat||p.newsup)?[]:[1];
+  setTimeout(()=>{p.cur=Math.min(p.cur+1,6);if(p.cur===1&&p.skip.includes(1))p.cur=2;p.gate=GATES[p.cur]!==undefined;
+   audit.unshift([now(),"招标编排主控Agent",p.id,`流转至 ${STAGES[p.cur]}，调度子Agent`,"状态机检查点"]);persist();refresh()},1500);
+  toast("已确认，主控Agent将推进下一阶段")}
+ else if(t==="back"){const b=+$("#bk").value;audit.unshift([now(),who(),p.id,`${g}：退回至${STAGES[b]}；意见：${op}`,"人工确认"]);p.cur=b;p.gate=GATES[b]!==undefined;toast("已退回，可修改对应字段后重新确认")}
+ else{audit.unshift([now(),who(),p.id,`${g}：驳回；意见：${op}`,"人工确认"]);p.gate=false;toast("已驳回，流程挂起转人工处理")}
+ selStage=null;persist();go("detail")}
+function expAudit(){const csv="\ufeff时间,操作主体,项目,事件,证据\n"+audit.map(a=>a.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\n");
+ const l=document.createElement("a");l.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));l.download="招标审计留痕.csv";l.click()}
+function reply(q){const id=(q.match(/ZB-\d{4}-\d{3}/)||[])[0];
+ if(id&&scoped(projects).some(x=>x.id===id)){const p=P(id);return `${p.id} 当前在【${STAGES[p.cur]}】，${p.gate&&GATES[p.cur]?"等待"+GATES[p.cur]:"子Agent执行中"}。${p.risk.length?"预警："+p.risk.join("、")+"。":""}`}
+ if(/新增|新建|创建/.test(q))return "点击“项目看板”右上角【＋ 新增招标项目】，填写必填项后保存，系统自动生成编号并进入 ① 需求立项。";
+ if(/修改|编辑/.test(q))return "在看板操作列点【编辑】，或在项目详情右上角点【✎ 编辑项目信息】；需填写修改原因，已锁定字段需先退回对应阶段。";
+ if(/确认|待办/.test(q)){const v=visible().filter(myGate);return `共有 ${v.length} 项待确认：`+v.map(p=>`${p.id}（${GATES[p.cur]}）`).join("；")}
+ if(/异常|风险|串标/.test(q))return "当前重大异常：ZB-2026-018 C/D报价偏差>10%且有串标迹象；ZB-2026-015 价偏6.8%已说明。";
+ return "可以问我某个招标编号的进度、待确认事项、风险预警，或如何新增/修改项目。"}
+function send(){const q=$("#ci").value.trim();if(!q)return;$("#cb").innerHTML+=`<div class="m u">${esc(q)}</div><div class="m">${reply(q)}</div>`;$("#ci").value="";$("#cb").scrollTop=1e5}
+$("#nav").onclick=e=>{const a=e.target.closest("a");if(a){selStage=null;go(a.dataset.p)}};
+$("#buSel").onchange=e=>{bu=e.target.value;refresh()};
+$("#fab").onclick=()=>{$("#chat").style.display="flex";$("#fab").style.display="none"};
+$("#cx").onclick=()=>{$("#chat").style.display="none";$("#fab").style.display="block"};
+$("#cs").onclick=send;$("#ci").onkeydown=e=>{if(e.key==="Enter")send()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeM()});
+$("#umenu").onclick=e=>{e.stopPropagation();const d=$("#udrop");d.style.display=d.style.display==="block"?"none":"block"};
+document.addEventListener("click",()=>{const d=$("#udrop");if(d)d.style.display="none"});
+$("#lp").onkeydown=$("#lc").onkeydown=e=>{if(e.key==="Enter")pwdLogin()};
+renderDemo();newCap();
+if(restore()){enterApp()}
+</script>
+</body>
+</html>
